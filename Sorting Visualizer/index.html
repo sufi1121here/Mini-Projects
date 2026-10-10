@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer</title>
+    <!-- We use a base tag to prevent local server URL space issues -->
+    <base href="/Sorting%20Visualizer/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Glassmorphism Control Panel -->
+        <header class="controls">
+            <div class="title-section">
+                <h1>Algorithm Visualizer</h1>
+                <p>Powered by Canvas API & requestAnimationFrame</p>
+            </div>
+            
+            <div class="settings">
+                <div class="control-group">
+                    <label for="algorithm">Algorithm:</label>
+                    <select id="algorithm">
+                        <option value="bubble">Bubble Sort</option>
+                        <option value="insertion">Insertion Sort</option>
+                        <option value="quick">Quick Sort</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="arraySize">Array Size:</label>
+                    <input type="range" id="arraySize" min="10" max="150" value="50">
+                </div>
+                
+                <div class="control-group">
+                    <label for="speed">Speed:</label>
+                    <input type="range" id="speed" min="1" max="100" value="50">
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="btnGenerate" class="btn btn-secondary">Generate New Array</button>
+                <button id="btnSort" class="btn btn-primary">Start Sorting</button>
+            </div>
+        </header>
+
+        <!-- High Performance Canvas Render Target -->
+        <main class="canvas-container">
+            <canvas id="sortingCanvas"></canvas>
+        </main>
+
+    </div>
+
+    <!-- Application Logic -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
