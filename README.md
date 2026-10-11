@@ -17,6 +17,21 @@ International clients and recruiters look for robust engineering beyond just "ma
 *   **Security Best Practices:** Avoiding XSS vulnerabilities by sanitizing inputs and completely avoiding dangerous functions like `eval()` (as seen in the Calculator refactor).
 *   **Advanced CSS Architecture:** Using CSS Custom Properties (variables) for dark/light theming, CSS Grid/Flexbox, and responsive mobile-first design.
 
-## Projects
-*   **[Simple Calculator](./Simple%20Calculator/)**: A sleek calculator refactored to use a custom mathematical expression parser, entirely avoiding the security risks of `eval()`.
-*   *(More advanced projects like a Custom Virtual DOM and Sorting Algorithm Visualizers coming soon)*
+## Showcase Projects
+
+1. **[Simple Calculator](./Simple%20Calculator/)**
+   * **Core Focus:** Security & Mathematical Parsing.
+   * **Highlights:** Built with an AST-like expression tokenizer and recursive-descent/shunting-yard parser, completely eliminating security risks associated with `eval()`. Features keyboard accessibility and a sleek dark theme.
+
+2. **[Reactive Mini-Framework](./Reactive-Mini-Framework/)**
+   * **Core Focus:** Frontend Framework Architecture & Internal Mechanisms.
+   * **Highlights:** A custom Virtual DOM library built from scratch (`h()` virtual node creation, reconciliation diffing, DOM patching), coupled with a reactive `useState()` hook. Demonstrates deep understanding of React/Vue internals.
+
+3. **[Sorting Algorithm Visualizer](./Sorting%20Visualizer/)**
+   * **Core Focus:** Algorithmic Complexity & Hardware-Accelerated Rendering.
+   * **Highlights:** High-performance 60FPS visualizer utilizing the HTML5 Canvas API rather than sluggish DOM nodes. Features real-time animated step-throughs of Bubble Sort, Insertion Sort, and Quick Sort with dynamic speed and array size controls.
+
+4. **[Offline Notes App](./Offline%20Notes%20App/)**
+   * **Core Focus:** Client-Side Persistence & Offline-First Engineering.
+   * **Highlights:** Powered by native browser **IndexedDB** for asynchronous, transactional data storage. Features a live custom Markdown parser with split-view editing, debounced auto-saving (450ms), tag indexing and filtering, pinning, and JSON/Markdown backup and restore.
+
