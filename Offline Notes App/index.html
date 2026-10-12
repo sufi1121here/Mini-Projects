@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Notes App | IndexedDB & Markdown</title>
+    <meta name="description" content="An offline-first, client-side Markdown notes app powered by transactional IndexedDB and live markdown preview.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💾</text></svg>">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Top App Bar -->
+        <header class="app-header">
+            <div class="header-brand">
+                <span class="brand-icon">💾</span>
+                <div class="brand-text">
+                    <h1>Offline Notes</h1>
+                    <span class="brand-subtitle">IndexedDB Engine</span>
+                </div>
+            </div>
+
+            <div class="header-status">
+                <div id="networkStatus" class="status-badge status-online">
+                    <span class="status-dot"></span>
+                    <span id="networkText">Online</span>
+                </div>
+                <div class="status-badge status-storage" title="All notes are stored securely in browser's IndexedDB">
+                    <span class="storage-icon">⚡</span>
+                    <span>Offline-Ready</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <input type="file" id="fileImport" accept=".json" style="display: none;">
+                <button id="btnImport" class="btn btn-ghost" title="Import notes from JSON backup">
+                    <span>📥 Import</span>
+                </button>
+                <button id="btnExportAll" class="btn btn-ghost" title="Backup all notes to a JSON file">
+                    <span>📤 Backup All</span>
+                </button>
+                <a href="../index.html" class="btn btn-outline" title="Return to Frontend Playground">
+                    <span>← Dashboard</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+            <!-- Sidebar: Notes List & Filters -->
+            <aside class="sidebar">
+                <div class="sidebar-top">
+                    <button id="btnNewNote" class="btn btn-primary btn-block">
+                        <span class="plus-icon">+</span>
+                        <span>New Note</span>
+                    </button>
+
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Search notes or #tags..." autocomplete="off">
+                        <button id="btnClearSearch" class="btn-clear" style="display: none;">✕</button>
+                    </div>
+
+                    <!-- Tag filter pills -->
+                    <div id="tagFilters" class="tag-filters">
+                        <button class="tag-pill active" data-tag="ALL">All Notes</button>
+                    </div>
+                </div>
+
+                <!-- Notes List -->
+                <div id="notesList" class="notes-list" role="list">
+                    <!-- Note items dynamically rendered here -->
+                </div>
+
+                <div class="sidebar-footer">
+                    <span id="notesCount">0 notes</span>
+                    <span class="engine-badge">IndexedDB v1</span>
+                </div>
+            </aside>
+
+            <!-- Editor / Preview Area -->
+            <main class="editor-area">
+                <!-- Empty State (When no note selected) -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">📝</div>
+                    <h2>No Note Selected</h2>
+                    <p>Select a note from the sidebar or create a new one to start writing.</p>
+                    <button id="btnEmptyNewNote" class="btn btn-primary">+ Create First Note</button>
+                </div>
+
+                <!-- Active Note Workspace -->
+                <div id="noteWorkspace" class="note-workspace">
+                    <!-- Note Toolbar -->
+                    <div class="note-toolbar">
+                        <div class="title-container">
+                            <input type="text" id="noteTitle" placeholder="Untitled Note..." maxlength="120" autocomplete="off">
+                            <button id="btnTogglePin" class="btn-icon" title="Pin note to top">📌</button>
+                        </div>
+
+                        <div class="toolbar-controls">
+                            <!-- View Mode Switcher -->
+                            <div class="view-switch">
+                                <button class="btn-view" data-mode="split" title="Split Screen">Split</button>
+                                <button class="btn-view active" data-mode="edit" title="Editor Only">Edit</button>
+                                <button class="btn-view" data-mode="preview" title="Preview Only">Preview</button>
+                            </div>
+
+                            <button id="btnDownloadMd" class="btn btn-ghost" title="Export this note as Markdown file">
+                                <span>📄 .md</span>
+                            </button>
+                            <button id="btnDeleteNote" class="btn btn-danger-ghost" title="Delete this note">
+                                <span>🗑️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tags Input Row -->
+                    <div class="tags-row">
+                        <span class="tags-label">Tags:</span>
+                        <input type="text" id="noteTags" placeholder="e.g. work, ideas, architecture (comma separated)...">
+                    </div>
+
+                    <!-- Split / Toggle Editing Container -->
+                    <div id="editorContainer" class="editor-container mode-edit">
+                        <!-- Markdown Raw Textarea -->
+                        <div class="pane pane-editor">
+                            <textarea id="noteContent" placeholder="Type Markdown here...
+# Heading 1
+## Heading 2
+- [ ] Task checkbox
+* Bullet point
+**Bold** and *Italics*
+```javascript
+const hello = 'world';
+```" spellcheck="true"></textarea>
+                        </div>
+
+                        <!-- Live Rendered Markdown Preview -->
+                        <div class="pane pane-preview">
+                            <div id="markdownPreview" class="markdown-body">
+                                <!-- Rendered HTML appears here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Bar -->
+                    <footer class="note-statusbar">
+                        <div class="status-left">
+                            <span id="saveStatus" class="save-status">
+                                <span class="save-icon">✓</span>
+                                <span class="save-text">Ready</span>
+                            </span>
+                            <span class="divider">•</span>
+                            <span id="lastEditedText" class="meta-text">Updated just now</span>
+                        </div>
+                        <div class="status-right">
+                            <span id="wordCount">0 words</span>
+                            <span class="divider">•</span>
+                            <span id="charCount">0 characters</span>
+                            <span class="divider">•</span>
+                            <span id="readTime">0 min read</span>
+                        </div>
+                    </footer>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts: Universal Loading (db.js then app.js) -->
+    <script src="db.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
