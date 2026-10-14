@@ -19,7 +19,7 @@ International clients and recruiters look for robust engineering beyond just "ma
 
 ## Showcase Projects
 
-1. **[Simple Calculator](./Simple%20Calculator/)**
+1. **[Simple Calculator](./Simple-Calculator/)**
    * **Core Focus:** Security & Mathematical Parsing.
    * **Highlights:** Built with an AST-like expression tokenizer and recursive-descent/shunting-yard parser, completely eliminating security risks associated with `eval()`. Features keyboard accessibility and a sleek dark theme.
 
@@ -27,11 +27,11 @@ International clients and recruiters look for robust engineering beyond just "ma
    * **Core Focus:** Frontend Framework Architecture & Internal Mechanisms.
    * **Highlights:** A custom Virtual DOM library built from scratch (`h()` virtual node creation, reconciliation diffing, DOM patching), coupled with a reactive `useState()` hook. Demonstrates deep understanding of React/Vue internals.
 
-3. **[Sorting Algorithm Visualizer](./Sorting%20Visualizer/)**
+3. **[Sorting Algorithm Visualizer](./Sorting-Visualizer/)**
    * **Core Focus:** Algorithmic Complexity & Hardware-Accelerated Rendering.
    * **Highlights:** High-performance 60FPS visualizer utilizing the HTML5 Canvas API rather than sluggish DOM nodes. Features real-time animated step-throughs of Bubble Sort, Insertion Sort, and Quick Sort with dynamic speed and array size controls.
 
-4. **[Offline Notes App](./Offline%20Notes%20App/)**
+4. **[Offline Notes App](./Offline-Notes-App/)**
    * **Core Focus:** Client-Side Persistence & Offline-First Engineering.
    * **Highlights:** Powered by native browser **IndexedDB** for asynchronous, transactional data storage. Features a live custom Markdown parser with split-view editing, debounced auto-saving (450ms), tag indexing and filtering, pinning, and JSON/Markdown backup and restore.
 
