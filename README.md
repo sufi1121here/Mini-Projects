@@ -35,3 +35,8 @@ International clients and recruiters look for robust engineering beyond just "ma
    * **Core Focus:** Client-Side Persistence & Offline-First Engineering.
    * **Highlights:** Powered by native browser **IndexedDB** for asynchronous, transactional data storage. Features a live custom Markdown parser with split-view editing, debounced auto-saving (450ms), tag indexing and filtering, pinning, and JSON/Markdown backup and restore.
 
+5. **[Interactive Kanban Board](./Kanban-Board/)**
+   * **Core Focus:** Native Drag and Drop Physics & Multi-Dimensional State Synchronization.
+   * **Highlights:** Built with native HTML5 Drag and Drop events (`dragstart`, `dragover`, `drop`) without third-party libraries. Features real-time viewport bounding calculations (`getBoundingClientRect`) to determine card insertion indices, priority tagging, and localStorage persistence.
+
+
