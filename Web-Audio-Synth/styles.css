@@ -1,0 +1,675 @@
+/* ==========================================================
+   Web Audio Studio - Cyber-Synth Glassmorphic Styling
+   ========================================================== */
+
+:root {
+    --bg-primary: #070a12;
+    --bg-secondary: #0c101d;
+    --panel-bg: rgba(16, 22, 38, 0.75);
+    --panel-border: rgba(255, 255, 255, 0.08);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --neon-cyan: #06b6d4;
+    --neon-purple: #8b5cf6;
+    --neon-indigo: #6366f1;
+    --neon-amber: #f59e0b;
+    --neon-rose: #f43f5e;
+    --neon-emerald: #10b981;
+
+    --gradient-brand: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    --gradient-pad-active: linear-gradient(135deg, #06b6d4, #3b82f6);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+
+    --transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-primary);
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.studio-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header & Transport Bar */
+.studio-header {
+    background: rgba(12, 16, 29, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--panel-border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 10px rgba(6, 182, 212, 0.4));
+}
+
+.brand h1 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+}
+
+.brand-sub {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--neon-cyan);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* Transport Controls */
+.transport-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-transport {
+    background: var(--neon-emerald);
+    color: #052e16;
+    font-size: 0.95rem;
+    font-weight: 800;
+    padding: 0.6rem 1.4rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+    transition: var(--transition);
+}
+
+.btn-transport:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.6);
+}
+
+.btn-transport.playing {
+    background: var(--neon-rose);
+    color: white;
+    box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+}
+
+.control-unit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.control-unit label {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.val-badge {
+    color: var(--neon-cyan);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Sliders */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px var(--neon-cyan);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+}
+
+select {
+    background: rgba(10, 14, 24, 0.85);
+    border: 1px solid var(--panel-border);
+    color: var(--text-primary);
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    outline: none;
+    cursor: pointer;
+}
+
+select option {
+    background: #0f1628;
+}
+
+/* Reusable Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: var(--transition);
+}
+
+.btn-outline {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    border: 1px solid var(--panel-border);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--neon-cyan);
+}
+
+.btn-ghost-sm {
+    background: transparent;
+    border: 1px solid var(--panel-border);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-ghost-sm:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+/* Studio Main Workspace */
+.studio-main {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Generic Panel Header */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.panel-title h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.telemetry {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.pulse-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.9); opacity: 0.7; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* Section 1: Live Oscilloscope */
+.visualizer-section {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 1.15rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.visualizer-modes {
+    display: flex;
+    background: rgba(10, 14, 24, 0.6);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+}
+
+.btn-viz-mode {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-viz-mode.active {
+    background: var(--neon-cyan);
+    color: #042f2e;
+}
+
+.canvas-wrap {
+    width: 100%;
+    height: 120px;
+    background: #060913;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+#oscilloscope {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Section 2: 16-Step Sequencer Matrix */
+.sequencer-section {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.sequencer-matrix {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.step-header-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.track-label-col {
+    width: 110px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+}
+
+.step-numbers {
+    display: grid;
+    grid-template-columns: repeat(16, minmax(36px, 1fr));
+    gap: 0.4rem;
+    flex: 1;
+}
+
+.step-num {
+    text-align: center;
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    padding: 0.15rem 0;
+    border-radius: 4px;
+}
+
+.step-num.beat-marker {
+    color: var(--neon-cyan);
+    font-weight: 700;
+}
+
+.step-num.active-head {
+    background: var(--neon-cyan);
+    color: #042f2e;
+    font-weight: 800;
+    box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.track-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.track-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.track-info {
+    width: 110px;
+    flex-shrink: 0;
+}
+
+.btn-track-preview {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--panel-border);
+    color: var(--text-primary);
+    padding: 0.45rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition);
+}
+
+.btn-track-preview:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--neon-cyan);
+    transform: translateX(2px);
+}
+
+.track-pads {
+    display: grid;
+    grid-template-columns: repeat(16, minmax(36px, 1fr));
+    gap: 0.4rem;
+    flex: 1;
+}
+
+.seq-pad {
+    height: 42px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+}
+
+.seq-pad:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Beat 1, 5, 9, 13 subtle separator tint */
+.seq-pad.beat-start {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Active toggled step */
+.seq-pad.active {
+    background: var(--gradient-brand);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
+}
+
+/* Current Playhead Glow */
+.seq-pad.head-active {
+    outline: 2px solid #ffffff;
+    outline-offset: 1px;
+}
+
+.seq-pad.active.head-active {
+    box-shadow: 0 0 20px #ffffff;
+    filter: brightness(1.3);
+}
+
+/* Section 3: Synthesizer & Piano Keyboard */
+.synth-section {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.synth-top-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.synth-params {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.param-unit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.param-unit label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.param-unit label span {
+    color: var(--neon-purple);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.waveform-picker {
+    display: flex;
+    background: rgba(10, 14, 24, 0.7);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+}
+
+.btn-wave {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.65rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-wave:hover {
+    color: var(--text-primary);
+}
+
+.btn-wave.active {
+    background: var(--neon-purple);
+    color: white;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+/* Piano Keyboard */
+.piano-keyboard-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+    overflow-x: auto;
+}
+
+.piano-keyboard {
+    position: relative;
+    display: flex;
+    height: 180px;
+    padding: 0 1rem;
+    user-select: none;
+}
+
+/* White Keys */
+.key-white {
+    width: 48px;
+    height: 100%;
+    background: linear-gradient(to bottom, #f1f5f9 0%, #cbd5e1 100%);
+    border: 1px solid #64748b;
+    border-radius: 0 0 6px 6px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 0.6rem;
+    gap: 0.2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.05s ease, background 0.05s ease;
+}
+
+.key-white:hover {
+    background: linear-gradient(to bottom, #ffffff 0%, #e2e8f0 100%);
+}
+
+.key-white.active {
+    background: linear-gradient(to bottom, #38bdf8 0%, #0284c7 100%);
+    transform: translateY(3px);
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.6);
+}
+
+/* Black Keys */
+.key-black {
+    width: 30px;
+    height: 60%;
+    background: linear-gradient(to bottom, #1e293b 0%, #090d16 100%);
+    border: 1px solid #334155;
+    border-radius: 0 0 4px 4px;
+    position: absolute;
+    top: 0;
+    z-index: 5;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 0.4rem;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.05s ease, background 0.05s ease;
+}
+
+.key-black:hover {
+    background: #1e293b;
+}
+
+.key-black.active {
+    background: linear-gradient(to bottom, #818cf8 0%, #4338ca 100%);
+    transform: translateY(3px);
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.7);
+}
+
+.key-note {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+.key-black .key-note {
+    color: #94a3b8;
+    font-size: 0.65rem;
+}
+
+.key-badge {
+    font-size: 0.62rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.1);
+    color: #1e293b;
+    padding: 0.1rem 0.25rem;
+    border-radius: 3px;
+}
+
+.key-black .key-badge {
+    background: rgba(255, 255, 255, 0.15);
+    color: #e2e8f0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .studio-header {
+        padding: 0.75rem 1rem;
+    }
+    .studio-main {
+        padding: 1rem;
+    }
+    .transport-controls {
+        gap: 0.75rem;
+    }
+    .key-white {
+        width: 38px;
+    }
+    .key-black {
+        width: 24px;
+    }
+}

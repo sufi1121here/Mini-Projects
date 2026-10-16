@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Audio Studio | Synthesizer & 16-Step Drum Machine</title>
+    <meta name="description" content="A real-time synthesizer and 16-step beat sequencer built with the HTML5 Web Audio API, procedural DSP synthesis, lookahead scheduling, and live Canvas oscilloscope.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎹</text></svg>">
+</head>
+<body>
+    <div class="studio-layout">
+        <!-- Top Studio Control Bar -->
+        <header class="studio-header">
+            <div class="brand">
+                <span class="brand-icon">🎹</span>
+                <div>
+                    <h1>Web Audio Studio</h1>
+                    <span class="brand-sub">DSP Synthesis & 16-Step Sequencer</span>
+                </div>
+            </div>
+
+            <!-- Transport & Master Controls -->
+            <div class="transport-controls">
+                <button id="btnPlay" class="btn btn-transport" title="Start Sequencer">
+                    <span id="playIcon">▶</span> <span id="playText">Play</span>
+                </button>
+
+                <div class="control-unit">
+                    <label for="bpmSlider">Tempo: <span id="bpmVal" class="val-badge">120</span> BPM</label>
+                    <input type="range" id="bpmSlider" min="60" max="180" value="120" step="1">
+                </div>
+
+                <div class="control-unit">
+                    <label for="presetSelect">Presets</label>
+                    <select id="presetSelect">
+                        <option value="synthwave">Synthwave Retro</option>
+                        <option value="house">House 4-on-Floor</option>
+                        <option value="hiphop">Hip-Hop Groove</option>
+                        <option value="blank">Empty Grid</option>
+                    </select>
+                </div>
+
+                <div class="control-unit">
+                    <label for="volumeSlider">Master Volume</label>
+                    <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.7">
+                </div>
+            </div>
+
+            <div class="header-nav">
+                <a href="../index.html" class="btn btn-outline" title="Return to Frontend Playground Dashboard">
+                    <span>← Dashboard</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Studio Workspace -->
+        <main class="studio-main">
+            <!-- Top Section: Live Oscilloscope & Audio Telemetry -->
+            <section class="visualizer-section">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="pulse-indicator"></span>
+                        <h2>Real-time Oscilloscope</h2>
+                        <span class="telemetry">AnalyserNode (1024 FFT / 60FPS)</span>
+                    </div>
+                    <div class="visualizer-modes">
+                        <button class="btn-viz-mode active" data-mode="waveform">Waveform</button>
+                        <button class="btn-viz-mode" data-mode="frequency">Spectrum Bars</button>
+                    </div>
+                </div>
+                <div class="canvas-wrap">
+                    <canvas id="oscilloscope"></canvas>
+                </div>
+            </section>
+
+            <!-- Middle Section: 16-Step Rhythm Sequencer -->
+            <section class="sequencer-section">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <h2>16-Step Drum Machine</h2>
+                        <span class="telemetry">AudioContext Lookahead Clock Scheduler</span>
+                    </div>
+                    <div class="seq-actions">
+                        <button id="btnClearGrid" class="btn btn-ghost-sm">Clear Grid</button>
+                    </div>
+                </div>
+
+                <!-- 16-Step Matrix Container -->
+                <div class="sequencer-matrix">
+                    <!-- Step Numbers Header -->
+                    <div class="step-header-row">
+                        <div class="track-label-col">Track</div>
+                        <div class="step-numbers" id="stepNumbersHeader">
+                            <!-- 1-16 step numbers dynamically generated -->
+                        </div>
+                    </div>
+
+                    <!-- Track Rows (Kick, Snare, Hi-Hat, Synth) -->
+                    <div class="track-rows" id="trackRows">
+                        <!-- Kick Track -->
+                        <div class="track-row" data-track="kick">
+                            <div class="track-info">
+                                <button class="btn-track-preview" data-sound="kick" title="Preview Kick">🥁 Kick</button>
+                            </div>
+                            <div class="track-pads" data-track="kick"></div>
+                        </div>
+
+                        <!-- Snare Track -->
+                        <div class="track-row" data-track="snare">
+                            <div class="track-info">
+                                <button class="btn-track-preview" data-sound="snare" title="Preview Snare">💥 Snare</button>
+                            </div>
+                            <div class="track-pads" data-track="snare"></div>
+                        </div>
+
+                        <!-- Hi-Hat Track -->
+                        <div class="track-row" data-track="hihat">
+                            <div class="track-info">
+                                <button class="btn-track-preview" data-sound="hihat" title="Preview Hi-Hat">🎩 Hi-Hat</button>
+                            </div>
+                            <div class="track-pads" data-track="hihat"></div>
+                        </div>
+
+                        <!-- Synth Track -->
+                        <div class="track-row" data-track="synth">
+                            <div class="track-info">
+                                <button class="btn-track-preview" data-sound="synth" title="Preview Synth">⚡ Synth</button>
+                            </div>
+                            <div class="track-pads" data-track="synth"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Section: Polyphonic Synth & Piano Keyboard -->
+            <section class="synth-section">
+                <div class="synth-top-controls">
+                    <div class="panel-title">
+                        <h2>Interactive Synthesizer</h2>
+                        <span class="telemetry">Playable via mouse click or computer keyboard keys (A-K)</span>
+                    </div>
+
+                    <div class="synth-params">
+                        <!-- Waveform Picker -->
+                        <div class="param-unit">
+                            <label>Waveform</label>
+                            <div class="waveform-picker">
+                                <button class="btn-wave" data-wave="sine" title="Sine (Smooth)">∿ Sine</button>
+                                <button class="btn-wave" data-wave="triangle" title="Triangle (Warm)">▲ Tri</button>
+                                <button class="btn-wave active" data-wave="sawtooth" title="Sawtooth (Buzzy)">⧖ Saw</button>
+                                <button class="btn-wave" data-wave="square" title="Square (8-bit)">⎍ Square</button>
+                            </div>
+                        </div>
+
+                        <!-- ADSR Envelope -->
+                        <div class="param-unit">
+                            <label for="attackSlider">Attack: <span id="attackVal">0.02s</span></label>
+                            <input type="range" id="attackSlider" min="0.005" max="0.5" step="0.01" value="0.02">
+                        </div>
+
+                        <div class="param-unit">
+                            <label for="decaySlider">Decay: <span id="decayVal">0.15s</span></label>
+                            <input type="range" id="decaySlider" min="0.05" max="0.8" step="0.01" value="0.15">
+                        </div>
+
+                        <div class="param-unit">
+                            <label for="sustainSlider">Sustain: <span id="sustainVal">50%</span></label>
+                            <input type="range" id="sustainSlider" min="0.1" max="1.0" step="0.05" value="0.5">
+                        </div>
+
+                        <div class="param-unit">
+                            <label for="releaseSlider">Release: <span id="releaseVal">0.3s</span></label>
+                            <input type="range" id="releaseSlider" min="0.05" max="1.2" step="0.05" value="0.3">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piano Keyboard -->
+                <div class="piano-keyboard-wrap">
+                    <div class="piano-keyboard" id="pianoKeyboard">
+                        <!-- Keys dynamically populated or structured -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts: Audio Engine then Application Controller -->
+    <script src="audio-engine.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

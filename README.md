@@ -39,4 +39,9 @@ International clients and recruiters look for robust engineering beyond just "ma
    * **Core Focus:** Native Drag and Drop Physics & Multi-Dimensional State Synchronization.
    * **Highlights:** Built with native HTML5 Drag and Drop events (`dragstart`, `dragover`, `drop`) without third-party libraries. Features real-time viewport bounding calculations (`getBoundingClientRect`) to determine card insertion indices, priority tagging, and localStorage persistence.
 
+6. **[Web Audio Studio](./Web-Audio-Synth/)**
+   * **Core Focus:** Digital Signal Processing (DSP) & Real-Time Audio Clock Synchronization.
+   * **Highlights:** Built with the HTML5 Web Audio API (`AudioContext`). Features procedural mathematical drum synthesis (zero external MP3s), Chris Wilson's lookahead clock scheduler for drift-free rhythm sequencing, an interactive piano synthesizer with ADSR envelopes, and a real-time Canvas oscilloscope.
+
+
 
