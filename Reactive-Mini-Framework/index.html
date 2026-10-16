@@ -4,16 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reactive Mini-Framework</title>
-    <base href="/Reactive-Mini-Framework/">
     <!-- Modern Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 </head>
 <body>
-    
-    <!-- This is where our custom Virtual DOM will inject the UI -->
-    <div id="app"></div>
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+        <div class="brand">
+            <span class="brand-icon">⚡</span>
+            <div>
+                <h1>Reactive Mini-Framework</h1>
+                <span class="brand-sub">Custom Virtual DOM &amp; useState Hook</span>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <a href="../index.html" class="btn-dashboard">← Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Studio Split Workspace -->
+    <main class="studio-workspace">
+        <!-- Left: Interactive App Container -->
+        <section class="app-pane">
+            <div id="app"></div>
+        </section>
+
+        <!-- Right: Real-Time Virtual DOM DevTools Inspector -->
+        <aside class="inspector-pane">
+            <div class="inspector-card">
+                <div class="inspector-header">
+                    <div class="inspector-title">
+                        <span class="live-dot"></span>
+                        <h3>Virtual DOM Live Inspector</h3>
+                    </div>
+                    <span class="engine-badge">h(type, props, ...children)</span>
+                </div>
+
+                <div class="telemetry-bar">
+                    <div class="telemetry-item">
+                        <span class="tel-label">Render Cycle:</span>
+                        <span id="metricRenders" class="tel-val text-accent">1</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="tel-label">VNodes in Memory:</span>
+                        <span id="metricNodes" class="tel-val text-cyan">0</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="tel-label">DOM Patch Latency:</span>
+                        <span id="metricTime" class="tel-val text-emerald">0.00ms</span>
+                    </div>
+                </div>
+
+                <div class="inspector-info">
+                    Every state update generates a new lightweight Virtual DOM tree in memory before the real DOM is reconciled.
+                </div>
+
+                <div class="vdom-viewer">
+                    <pre><code id="vdomCode">// Waiting for initial render...</code></pre>
+                </div>
+            </div>
+        </aside>
+    </main>
 
     <!-- Notice type="module": This allows us to use ES6 import/export natively in the browser -->
     <script type="module" src="app.js"></script>

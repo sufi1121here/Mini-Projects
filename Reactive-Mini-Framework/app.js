@@ -75,6 +75,83 @@ function App() {
     );
 }
 
-// 4. Mount the App to the Real DOM
+// 4. Virtual DOM Tree Serialization & Syntax Highlighter for DevTools
+function countVNodes(vnode) {
+    if (!vnode || typeof vnode !== 'object') return 1;
+    let count = 1;
+    if (Array.isArray(vnode.children)) {
+        vnode.children.forEach(child => {
+            count += countVNodes(child);
+        });
+    }
+    return count;
+}
+
+function cleanVNodeForDisplay(vnode) {
+    if (typeof vnode === 'string' || typeof vnode === 'number') {
+        return vnode;
+    }
+    if (!vnode) return null;
+
+    // Filter props to display event listeners cleanly
+    const cleanProps = {};
+    for (let k in vnode.props) {
+        if (!k.startsWith('on')) {
+            cleanProps[k] = vnode.props[k];
+        } else {
+            cleanProps[k] = `[Function: ${k}]`;
+        }
+    }
+
+    const cleanChildren = (vnode.children || []).map(cleanVNodeForDisplay);
+
+    return {
+        type: vnode.type,
+        props: cleanProps,
+        children: cleanChildren
+    };
+}
+
+function syntaxHighlightJSON(json) {
+    return json
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            let cls = 'vdom-number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'vdom-key';
+                } else if (/^"(div|header|h1|p|ul|li|span|button|input)"/i.test(match)) {
+                    cls = 'vdom-type';
+                } else {
+                    cls = 'vdom-string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'vdom-boolean';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+}
+
+function updateVdomInspector({ vnode, renderCount, renderTime }) {
+    const metricRenders = document.getElementById('metricRenders');
+    const metricNodes = document.getElementById('metricNodes');
+    const metricTime = document.getElementById('metricTime');
+    const vdomCode = document.getElementById('vdomCode');
+
+    if (metricRenders) metricRenders.textContent = renderCount;
+    if (metricTime) metricTime.textContent = `${renderTime}ms`;
+    if (metricNodes) metricNodes.textContent = countVNodes(vnode);
+
+    if (vdomCode) {
+        const cleanTree = cleanVNodeForDisplay(vnode);
+        const jsonStr = JSON.stringify(cleanTree, null, 2);
+        vdomCode.innerHTML = syntaxHighlightJSON(jsonStr);
+    }
+}
+
+// 5. Mount the App to the Real DOM with live Inspector Telemetry
 const rootContainer = document.getElementById('app');
-mount(App, rootContainer);
+mount(App, rootContainer, updateVdomInspector);
+

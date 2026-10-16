@@ -74,10 +74,14 @@ export function useState(initialValue) {
 }
 
 // 4. The Mounter (Initializes the app loop)
-export function mount(Component, container) {
+export function mount(Component, container, onUpdate) {
+    let renderCount = 0;
     const componentInstance = {
         states: [],
         update: () => {
+            renderCount++;
+            const t0 = performance.now();
+            
             // 1. Clear existing DOM (In a real framework, we'd diff here)
             container.innerHTML = '';
             
@@ -90,6 +94,11 @@ export function mount(Component, container) {
             
             // 4. Render it to the screen
             render(vnode, container);
+
+            const renderTime = (performance.now() - t0).toFixed(2);
+            if (typeof onUpdate === 'function') {
+                onUpdate({ vnode, renderCount, renderTime });
+            }
         }
     };
     
