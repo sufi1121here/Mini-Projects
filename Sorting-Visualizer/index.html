@@ -3,56 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorting Visualizer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Sorting &amp; Algorithm Visualizer | 60FPS Canvas &amp; Audio DSP</title>
+    <meta name="description" content="A real-time sorting algorithm visualizer with 60FPS HTML5 Canvas rendering, Web Audio tone synthesis, live comparison telemetry, and Big-O complexity analysis.">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
 </head>
 <body>
-    <div class="app-container">
-        
-        <!-- Glassmorphism Control Panel -->
-        <header class="controls">
-            <div class="title-section">
-                <h1>Algorithm Visualizer</h1>
-                <p>Powered by Canvas API & requestAnimationFrame</p>
-            </div>
-            
-            <div class="settings">
-                <div class="control-group">
-                    <label for="algorithm">Algorithm:</label>
-                    <select id="algorithm">
-                        <option value="bubble">Bubble Sort</option>
-                        <option value="insertion">Insertion Sort</option>
-                        <option value="quick">Quick Sort</option>
-                    </select>
-                </div>
-                
-                <div class="control-group">
-                    <label for="arraySize">Array Size:</label>
-                    <input type="range" id="arraySize" min="10" max="150" value="50">
-                </div>
-                
-                <div class="control-group">
-                    <label for="speed">Speed:</label>
-                    <input type="range" id="speed" min="1" max="100" value="50">
+    <div class="app-layout">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="brand">
+                <span class="brand-icon">📊</span>
+                <div>
+                    <h1>Algorithm &amp; Complexity Visualizer</h1>
+                    <span class="brand-sub">Canvas API • Web Audio Tone Synthesis • Big-O Telemetry</span>
                 </div>
             </div>
-
-            <div class="actions">
-                <button id="btnGenerate" class="btn btn-secondary">Generate New Array</button>
-                <button id="btnSort" class="btn btn-primary">Start Sorting</button>
+            <div class="nav-actions">
+                <a href="../index.html" class="btn-dashboard">← Dashboard</a>
             </div>
         </header>
 
-        <!-- High Performance Canvas Render Target -->
-        <main class="canvas-container">
-            <canvas id="sortingCanvas"></canvas>
-        </main>
+        <!-- Main Studio Area -->
+        <div class="visualizer-container">
+            <!-- Controls Toolbar -->
+            <section class="controls-card">
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="algorithm">Algorithm</label>
+                        <select id="algorithm">
+                            <option value="quick">Quick Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="insertion">Insertion Sort</option>
+                            <option value="selection">Selection Sort</option>
+                            <option value="bubble">Bubble Sort</option>
+                        </select>
+                    </div>
 
+                    <div class="control-group range-group">
+                        <div class="range-header">
+                            <label for="arraySize">Array Size</label>
+                            <span id="lblSize" class="range-val">50</span>
+                        </div>
+                        <input type="range" id="arraySize" min="15" max="140" value="50">
+                    </div>
+
+                    <div class="control-group range-group">
+                        <div class="range-header">
+                            <label for="speed">Animation Speed</label>
+                            <span id="lblSpeed" class="range-val">60%</span>
+                        </div>
+                        <input type="range" id="speed" min="1" max="100" value="60">
+                    </div>
+
+                    <div class="control-group action-group">
+                        <button id="btnSound" class="btn btn-sound active" title="Toggle Sound Feedback">🔊 Audio: ON</button>
+                        <button id="btnGenerate" class="btn btn-secondary">New Array</button>
+                        <button id="btnSort" class="btn btn-primary">Start Sorting</button>
+                        <button id="btnReset" class="btn btn-outline" disabled>Stop</button>
+                    </div>
+                </div>
+
+                <!-- Telemetry & Big-O Complexity Bar -->
+                <div class="telemetry-bar">
+                    <div class="telemetry-stats">
+                        <div class="stat-badge">
+                            <span class="stat-label">Comparisons:</span>
+                            <span id="metricComparisons" class="stat-val text-accent">0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-label">Array Accesses / Swaps:</span>
+                            <span id="metricSwaps" class="stat-val text-cyan">0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-label">Elapsed Time:</span>
+                            <span id="metricTime" class="stat-val text-emerald">0.00s</span>
+                        </div>
+                    </div>
+
+                    <div class="complexity-chips">
+                        <div class="complexity-pill" title="Time Complexity">
+                            <span class="pill-label">Time:</span>
+                            <span class="pill-val text-accent" id="valTime">Avg: O(n log n)</span>
+                        </div>
+                        <div class="complexity-pill" title="Auxiliary Space Complexity">
+                            <span class="pill-label">Aux Space:</span>
+                            <span class="pill-val text-cyan" id="valSpace">O(log n)</span>
+                        </div>
+                        <div class="complexity-pill" title="Sorting Stability">
+                            <span class="pill-label">Stability:</span>
+                            <span class="pill-val text-emerald" id="valStability">Unstable</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- High Performance Canvas Render Target -->
+            <main class="canvas-card">
+                <canvas id="sortingCanvas"></canvas>
+            </main>
+        </div>
     </div>
 
-    <!-- Application Logic -->
+    <!-- Application Engine -->
     <script src="app.js"></script>
 </body>
 </html>

@@ -25,11 +25,11 @@ International clients and recruiters look for robust engineering beyond just "ma
 
 2. **[Reactive Mini-Framework](./Reactive-Mini-Framework/)**
    * **Core Focus:** Frontend Framework Architecture & Internal Mechanisms.
-   * **Highlights:** A custom Virtual DOM library built from scratch (`h()` virtual node creation, reconciliation diffing, DOM patching), coupled with a reactive `useState()` hook. Demonstrates deep understanding of React/Vue internals.
+   * **Highlights:** A custom Virtual DOM library built from scratch (`h()` virtual node creation, reconciliation diffing, DOM patching), coupled with a reactive `useState()` hook. Features a live DevTools VNode inspector panel displaying active in-memory tree nodes and DOM patch latency telemetry.
 
 3. **[Sorting Algorithm Visualizer](./Sorting-Visualizer/)**
-   * **Core Focus:** Algorithmic Complexity & Hardware-Accelerated Rendering.
-   * **Highlights:** High-performance 60FPS visualizer utilizing the HTML5 Canvas API rather than sluggish DOM nodes. Features real-time animated step-throughs of Bubble Sort, Insertion Sort, and Quick Sort with dynamic speed and array size controls.
+   * **Core Focus:** Algorithmic Complexity, Hardware-Accelerated Rendering & Audio DSP.
+   * **Highlights:** High-performance 60FPS visualizer utilizing the HTML5 Canvas API and Web Audio API tone synthesis. Features real-time animated step-throughs of Quick Sort, Merge Sort, Insertion Sort, Selection Sort, and Bubble Sort with live comparison counters, array mutation tracking, and dynamic Big-O complexity profiling.
 
 4. **[Offline Notes App](./Offline-Notes-App/)**
    * **Core Focus:** Client-Side Persistence & Offline-First Engineering.
