@@ -3,36 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure AST Calculator | Lexical Tokenizer &amp; Precedence Parser</title>
+    <meta name="description" content="A secure mathematical expression evaluator built with Vanilla JavaScript, AST tokenization, and two-pass operator precedence parsing without eval().">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <title>Simple Calculator</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧮</text></svg>">
 </head>
 <body>
-    <div class="calculator">
-        <input type="text" id="display" placeholder="Simple Calculator" readonly>
-        <div class="buttons">
-            <button onclick="clearDisplay()" class="clear">C</button>
-            <button onclick="backspace()" class="backspace">←</button>
-            <button onclick="appendToDisplay('/')" class="operator">/</button>
-            <button onclick="appendToDisplay('*')" class="operator">*</button>
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('-')" class="operator">-</button>
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('+')" class="operator">+</button>
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="calculateResult()" class="equal">=</button>
-            <button onclick="appendToDisplay('0')" class="zero">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
-        </div>
+    <div class="app-layout">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="brand">
+                <span class="brand-icon">🧮</span>
+                <div>
+                    <h1>AST Expression Calculator</h1>
+                    <span class="brand-sub">Lexical Tokenizer • Operator Precedence • Zero eval()</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="view-toggle" role="group" aria-label="Calculator View Mode">
+                    <button id="btnModeClassic" class="btn-mode" onclick="setViewMode('classic')" title="Classic Original UI with Doodle Wallpaper">
+                        <span>🎨 Classic UI</span>
+                    </button>
+                    <button id="btnModeStudio" class="btn-mode active" onclick="setViewMode('studio')" title="AST DevTools Studio View">
+                        <span>🛠️ AST Studio</span>
+                    </button>
+                </div>
+                <a href="../index.html" class="btn-dashboard">← Dashboard</a>
+            </div>
+        </header>
+
+        <!-- Studio Workspace Split -->
+        <main class="studio-workspace">
+            <!-- Left Pane: Interactive Calculator -->
+            <section class="calculator-pane">
+                <div class="calculator-card">
+                    <div class="display-container">
+                        <div id="subDisplay" class="sub-display">Ready</div>
+                        <input type="text" id="display" class="main-display" placeholder="0" readonly>
+                    </div>
+
+                    <div class="keypad">
+                        <button class="btn-key key-clear" onclick="clearDisplay()" title="Clear (Escape)">C</button>
+                        <button class="btn-key key-util" onclick="backspace()" title="Backspace (Backspace)">⌫</button>
+                        <button class="btn-key key-op" onclick="appendToDisplay('/')" title="Divide (/)">÷</button>
+                        <button class="btn-key key-op" onclick="appendToDisplay('*')" title="Multiply (*)">×</button>
+
+                        <button class="btn-key key-num" onclick="appendToDisplay('7')">7</button>
+                        <button class="btn-key key-num" onclick="appendToDisplay('8')">8</button>
+                        <button class="btn-key key-num" onclick="appendToDisplay('9')">9</button>
+                        <button class="btn-key key-op" onclick="appendToDisplay('-')" title="Subtract (-)">−</button>
+
+                        <button class="btn-key key-num" onclick="appendToDisplay('4')">4</button>
+                        <button class="btn-key key-num" onclick="appendToDisplay('5')">5</button>
+                        <button class="btn-key key-num" onclick="appendToDisplay('6')">6</button>
+                        <button class="btn-key key-op" onclick="appendToDisplay('+')" title="Add (+)">+</button>
+
+                        <button class="btn-key key-num" onclick="appendToDisplay('1')">1</button>
+                        <button class="btn-key key-num" onclick="appendToDisplay('2')">2</button>
+                        <button class="btn-key key-num" onclick="appendToDisplay('3')">3</button>
+                        <button class="btn-key key-equal" onclick="calculateResult()" title="Evaluate (Enter)">=</button>
+
+                        <button class="btn-key key-num key-zero" onclick="appendToDisplay('0')">0</button>
+                        <button class="btn-key key-num" onclick="appendToDisplay('.')">.</button>
+                    </div>
+
+                    <div class="keyboard-hint">
+                        💡 <strong>Keyboard Ready:</strong> Type numbers, operators (+, -, *, /), Enter to solve, Esc to clear.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Pane: Live AST Token Stream & Execution Trace Inspector -->
+            <aside class="inspector-pane">
+                <div class="inspector-card">
+                    <div class="inspector-header">
+                        <div class="inspector-title">
+                            <span class="live-dot"></span>
+                            <h3>Parser &amp; AST DevTools</h3>
+                        </div>
+                        <span class="security-badge">🛡️ Zero eval()</span>
+                    </div>
+
+                    <div class="telemetry-bar">
+                        <div class="stat-badge">
+                            <span class="stat-label">Tokens:</span>
+                            <span id="metricTokens" class="stat-val text-accent">0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-label">Grammar:</span>
+                            <span class="stat-val text-cyan">Arithmetic AST</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-label">Security:</span>
+                            <span class="stat-val text-emerald">XSS-Immune</span>
+                        </div>
+                    </div>
+
+                    <!-- Token Stream Section -->
+                    <div class="inspector-section">
+                        <div class="section-heading">
+                            <h4>Lexical Token Stream</h4>
+                            <span class="sub-heading">Real-Time Lexer Output</span>
+                        </div>
+                        <div id="tokenChips" class="token-chips">
+                            <span class="token-placeholder">// Enter an expression on the keypad to inspect tokens</span>
+                        </div>
+                    </div>
+
+                    <!-- Execution Trace Section -->
+                    <div class="inspector-section">
+                        <div class="section-heading">
+                            <h4>Parser Execution Trace</h4>
+                            <span class="sub-heading">Operator Precedence Resolution</span>
+                        </div>
+                        <div id="executionTrace" class="trace-console">
+                            <div class="trace-entry text-muted">// Press = to view AST precedence trace...</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
     </div>
-    <form action="" method="get">
-        
-    </form>
+
+    <!-- Core Parsing Engine -->
     <script src="calculator.js"></script>
 </body>
 </html>

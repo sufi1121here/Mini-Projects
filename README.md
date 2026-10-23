@@ -20,8 +20,8 @@ International clients and recruiters look for robust engineering beyond just "ma
 ## Showcase Projects
 
 1. **[Simple Calculator](./Simple-Calculator/)**
-   * **Core Focus:** Security & Mathematical Parsing.
-   * **Highlights:** Built with an AST-like expression tokenizer and recursive-descent/shunting-yard parser, completely eliminating security risks associated with `eval()`. Features keyboard accessibility and a sleek dark theme.
+   * **Core Focus:** Security, Lexical Tokenization & Compiler Precedence Parsing.
+   * **Highlights:** Built with a regex lexical tokenizer and two-pass operator precedence parser, completely eliminating security risks associated with `eval()`. Features a live AST DevTools inspector with real-time token stream badges, step-by-step operator precedence execution tracing, precision float normalization, and physical keyboard support.
 
 2. **[Reactive Mini-Framework](./Reactive-Mini-Framework/)**
    * **Core Focus:** Frontend Framework Architecture & Internal Mechanisms.
