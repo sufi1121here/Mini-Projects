@@ -10,9 +10,10 @@ Most frontend developers know how to use React, but very few understand **how Re
 
 This project proves you understand the internal architecture of modern UI frameworks:
 * **The Virtual DOM Concept (`h()`):** Functions as the JSX/compiler target. Converts simple JavaScript invocations into a lightweight in-memory tree of virtual nodes (`{ type, props, children }`).
-* **The Reconciliation & DOM Patcher (`render()`):** Recursively traverses the VNode tree, instantiates real HTML DOM elements, registers event handlers with proper closures, and appends them to the root container.
+* **True Recursive Tree Diffing (`diff()`):** Replaces naive `innerHTML = ''` DOM recreation with an in-place tree diffing algorithm. It recursively compares `oldVNode` vs `newVNode`, updates text nodes directly via `nodeValue`, patches mutated attributes, and adds/removes elements at exact child indices.
+* **Fine-Grained Prop & Event Patcher (`patchProps()`):** Diffs previous properties against incoming properties, manages DOM listener closures, and maintains controlled input values/focus.
 * **Closure-Based Reactivity (`useState()`):** Implements an internal component instance cursor that maintains state variables across render cycles and triggers automatic re-renders on mutation.
-* **Live VDOM DevTools Inspector:** Displays real-time telemetry including render cycles, active VNodes count, DOM patch latency in milliseconds, and a syntax-highlighted in-memory VNode JSON tree.
+* **Live VDOM DevTools Inspector:** Displays real-time telemetry including render cycles, active VNodes count, DOM patch latency, exact real DOM mutation count, and a syntax-highlighted in-memory VNode JSON tree.
 
 ---
 
@@ -20,7 +21,9 @@ This project proves you understand the internal architecture of modern UI framew
 
 * **[`framework.js`](./framework.js):**
   * `h(type, props, ...children)`: VNode factory function.
-  * `render(vnode, container)`: Recursive Virtual DOM ➔ Real DOM compiler.
+  * `createRealNode(vnode)`: Real HTML DOM node generator.
+  * `patchProps(element, oldProps, newProps)`: In-place attribute and event patcher.
+  * `diff(parent, oldVNode, newVNode, index)`: Recursive tree reconciliation engine.
   * `useState(initialValue)`: State hook with functional update support (`setState(prev => prev + 1)`).
   * `mount(Component, container, onUpdate)`: Application lifecycle coordinator with render telemetry hooks.
 * **[`app.js`](./app.js):**

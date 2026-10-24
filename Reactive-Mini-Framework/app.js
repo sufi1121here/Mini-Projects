@@ -134,15 +134,19 @@ function syntaxHighlightJSON(json) {
         });
 }
 
-function updateVdomInspector({ vnode, renderCount, renderTime }) {
+function updateVdomInspector({ vnode, renderCount, renderTime, patchCount }) {
     const metricRenders = document.getElementById('metricRenders');
     const metricNodes = document.getElementById('metricNodes');
     const metricTime = document.getElementById('metricTime');
+    const metricPatches = document.getElementById('metricPatches');
     const vdomCode = document.getElementById('vdomCode');
 
     if (metricRenders) metricRenders.textContent = renderCount;
     if (metricTime) metricTime.textContent = `${renderTime}ms`;
     if (metricNodes) metricNodes.textContent = countVNodes(vnode);
+    if (metricPatches) {
+        metricPatches.textContent = renderCount === 1 ? 'Initial Mount' : `${patchCount} node(s) patched`;
+    }
 
     if (vdomCode) {
         const cleanTree = cleanVNodeForDisplay(vnode);

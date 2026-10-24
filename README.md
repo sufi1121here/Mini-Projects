@@ -25,7 +25,7 @@ International clients and recruiters look for robust engineering beyond just "ma
 
 2. **[Reactive Mini-Framework](./Reactive-Mini-Framework/)**
    * **Core Focus:** Frontend Framework Architecture & Internal Mechanisms.
-   * **Highlights:** A custom Virtual DOM library built from scratch (`h()` virtual node creation, reconciliation diffing, DOM patching), coupled with a reactive `useState()` hook. Features a live DevTools VNode inspector panel displaying active in-memory tree nodes and DOM patch latency telemetry.
+   * **Highlights:** A custom Virtual DOM library built from scratch (`h()` virtual node creation, recursive tree diffing, and in-place DOM patching), coupled with a reactive `useState()` hook. Eliminates naive `innerHTML = ''` wipes in favor of true node-level DOM reconciliation, featuring a live DevTools VNode inspector panel displaying active in-memory tree nodes, real DOM patch counts, and reconciliation latency telemetry.
 
 3. **[Sorting Algorithm Visualizer](./Sorting-Visualizer/)**
    * **Core Focus:** Algorithmic Complexity, Hardware-Accelerated Rendering & Audio DSP.

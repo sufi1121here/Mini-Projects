@@ -55,10 +55,14 @@
                         <span class="tel-label">DOM Patch Latency:</span>
                         <span id="metricTime" class="tel-val text-emerald">0.00ms</span>
                     </div>
+                    <div class="telemetry-item">
+                        <span class="tel-label">Real DOM Patches:</span>
+                        <span id="metricPatches" class="tel-val text-amber">Initial Mount</span>
+                    </div>
                 </div>
 
                 <div class="inspector-info">
-                    Every state update generates a new lightweight Virtual DOM tree in memory before the real DOM is reconciled.
+                    True recursive tree diffing (<code>diff</code>) calculates minimal changes between in-memory VNodes and patches real DOM nodes in-place without wiping <code>innerHTML</code>.
                 </div>
 
                 <div class="vdom-viewer">
