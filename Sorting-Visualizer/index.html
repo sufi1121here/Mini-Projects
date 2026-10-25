@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (!location.pathname.endsWith('/') && !location.pathname.endsWith('.html')) {
+            document.write('<base href="' + location.pathname + '/">');
+            history.replaceState(null, '', location.pathname + '/' + location.search + location.hash);
+        }
+    </script>
     <title>Sorting &amp; Algorithm Visualizer | 60FPS Canvas &amp; Audio DSP</title>
     <meta name="description" content="A real-time sorting algorithm visualizer with 60FPS HTML5 Canvas rendering, Web Audio tone synthesis, live comparison telemetry, and Big-O complexity analysis.">
     <!-- Fonts -->

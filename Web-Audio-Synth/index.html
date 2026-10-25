@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (!location.pathname.endsWith('/') && !location.pathname.endsWith('.html')) {
+            document.write('<base href="' + location.pathname + '/">');
+            history.replaceState(null, '', location.pathname + '/' + location.search + location.hash);
+        }
+    </script>
     <title>Web Audio Studio | Synthesizer & 16-Step Drum Machine</title>
     <meta name="description" content="A real-time synthesizer and 16-step beat sequencer built with the HTML5 Web Audio API, procedural DSP synthesis, lookahead scheduling, and live Canvas oscilloscope.">
     <!-- Google Fonts -->

@@ -16,7 +16,15 @@ export function h(type, props, ...children) {
     };
 }
 
-// 2. Real DOM Node Creator
+// 2. The Renderer (Mounts a VNode tree to a container)
+export function render(vnode, container) {
+    container.innerHTML = '';
+    const element = createRealNode(vnode);
+    container.appendChild(element);
+    return element;
+}
+
+// 3. Real DOM Node Creator
 export function createRealNode(vnode) {
     // Text / Primitive Nodes
     if (typeof vnode === 'string' || typeof vnode === 'number') {

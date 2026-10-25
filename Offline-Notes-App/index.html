@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (!location.pathname.endsWith('/') && !location.pathname.endsWith('.html')) {
+            document.write('<base href="' + location.pathname + '/">');
+            history.replaceState(null, '', location.pathname + '/' + location.search + location.hash);
+        }
+    </script>
     <title>Offline Notes App | IndexedDB & Markdown</title>
     <meta name="description" content="An offline-first, client-side Markdown notes app powered by transactional IndexedDB and live markdown preview.">
     <!-- Google Fonts -->
