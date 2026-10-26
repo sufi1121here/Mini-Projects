@@ -1,6 +1,6 @@
-# Advanced Mini-Projects Playground
+# Web Platform & Architecture Lab ⚡
 
-While I build large-scale applications using modern frameworks like React and Next.js, this repository serves as my **engineering playground for core web fundamentals**. 
+While I build large-scale applications using modern frameworks like React and Next.js, this repository serves as my **engineering lab for core web platform fundamentals and browser architecture**. 
 
 Here, I focus on building robust, high-performance applications using **pure Vanilla JavaScript, HTML5, and CSS3**—without relying on heavy frameworks. By building complex features from scratch, I demonstrate a deep understanding of browser APIs, algorithms, state management, and software architecture.
 
