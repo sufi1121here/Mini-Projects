@@ -72,6 +72,21 @@
                     </div>
                 </div>
 
+                <!-- Live Phase & Legend Bar -->
+                <div class="phase-bar">
+                    <div class="phase-indicator">
+                        <span class="phase-dot" id="phaseDot"></span>
+                        <span class="phase-label">Live State:</span>
+                        <span id="metricPhase" class="phase-text">Ready to Sort</span>
+                    </div>
+                    <div class="canvas-legend">
+                        <span class="legend-item"><span class="legend-color legend-compare"></span> Comparing</span>
+                        <span class="legend-item"><span class="legend-color legend-pivot"></span> Pivot / Target</span>
+                        <span class="legend-item"><span class="legend-color legend-sorted"></span> Sorted</span>
+                        <span class="legend-item"><span class="legend-color legend-unsorted"></span> Unsorted</span>
+                    </div>
+                </div>
+
                 <!-- Telemetry & Big-O Complexity Bar -->
                 <div class="telemetry-bar">
                     <div class="telemetry-stats">
@@ -80,7 +95,7 @@
                             <span id="metricComparisons" class="stat-val text-accent">0</span>
                         </div>
                         <div class="stat-badge">
-                            <span class="stat-label">Array Accesses / Swaps:</span>
+                            <span class="stat-label">Accesses / Swaps:</span>
                             <span id="metricSwaps" class="stat-val text-cyan">0</span>
                         </div>
                         <div class="stat-badge">
@@ -90,17 +105,25 @@
                     </div>
 
                     <div class="complexity-chips">
-                        <div class="complexity-pill" title="Time Complexity">
-                            <span class="pill-label">Time:</span>
-                            <span class="pill-val text-accent" id="valTime">Avg: O(n log n)</span>
+                        <div class="complexity-pill" title="Best Case Time Complexity">
+                            <span class="pill-label">Best:</span>
+                            <span class="pill-val text-emerald" id="valBest">O(n log n)</span>
+                        </div>
+                        <div class="complexity-pill" title="Average Case Time Complexity">
+                            <span class="pill-label">Avg:</span>
+                            <span class="pill-val text-accent" id="valAvg">O(n log n)</span>
+                        </div>
+                        <div class="complexity-pill" title="Worst Case Time Complexity">
+                            <span class="pill-label">Worst:</span>
+                            <span class="pill-val text-rose" id="valWorst">O(n²)</span>
                         </div>
                         <div class="complexity-pill" title="Auxiliary Space Complexity">
-                            <span class="pill-label">Aux Space:</span>
+                            <span class="pill-label">Space:</span>
                             <span class="pill-val text-cyan" id="valSpace">O(log n)</span>
                         </div>
                         <div class="complexity-pill" title="Sorting Stability">
                             <span class="pill-label">Stability:</span>
-                            <span class="pill-val text-emerald" id="valStability">Unstable</span>
+                            <span class="pill-val text-amber" id="valStability">Unstable</span>
                         </div>
                     </div>
                 </div>

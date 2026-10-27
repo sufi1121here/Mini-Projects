@@ -22,39 +22,66 @@ const lblSpeed = document.getElementById('lblSpeed');
 const metricComparisons = document.getElementById('metricComparisons');
 const metricSwaps = document.getElementById('metricSwaps');
 const metricTime = document.getElementById('metricTime');
+const metricPhase = document.getElementById('metricPhase');
+const phaseDot = document.getElementById('phaseDot');
 
-const valTime = document.getElementById('valTime');
+const valBest = document.getElementById('valBest');
+const valAvg = document.getElementById('valAvg');
+const valWorst = document.getElementById('valWorst');
 const valSpace = document.getElementById('valSpace');
 const valStability = document.getElementById('valStability');
 
 // --- Big-O Complexity Metadata ---
 const ALGO_METADATA = {
     quick: {
-        time: 'Avg: O(n log n)',
+        name: 'Quick Sort',
+        best: 'O(n log n)',
+        avg: 'O(n log n)',
+        worst: 'O(n²)',
         space: 'O(log n)',
         stability: 'Unstable'
     },
     merge: {
-        time: 'Avg: O(n log n)',
+        name: 'Merge Sort',
+        best: 'O(n log n)',
+        avg: 'O(n log n)',
+        worst: 'O(n log n)',
         space: 'O(n)',
         stability: 'Stable'
     },
     insertion: {
-        time: 'Avg: O(n²)',
+        name: 'Insertion Sort',
+        best: 'O(n)',
+        avg: 'O(n²)',
+        worst: 'O(n²)',
         space: 'O(1)',
         stability: 'Stable'
     },
     selection: {
-        time: 'Avg: O(n²)',
+        name: 'Selection Sort',
+        best: 'O(n²)',
+        avg: 'O(n²)',
+        worst: 'O(n²)',
         space: 'O(1)',
         stability: 'Unstable'
     },
     bubble: {
-        time: 'Avg: O(n²)',
+        name: 'Bubble Sort',
+        best: 'O(n)',
+        avg: 'O(n²)',
+        worst: 'O(n²)',
         space: 'O(1)',
         stability: 'Stable'
     }
 };
+
+// --- Live Phase Tracer Helper ---
+function setPhase(text, state = 'working') {
+    if (metricPhase) metricPhase.textContent = text;
+    if (phaseDot) {
+        phaseDot.className = 'phase-dot' + (state ? ' ' + state : '');
+    }
+}
 
 // --- Application State ---
 let array = [];
@@ -136,6 +163,7 @@ function generateArray() {
         array.push(Math.floor(Math.random() * 90) + 10);
     }
     resetMetrics();
+    setPhase(`Generated ${size} random elements • Ready to sort`, '');
     drawArray();
 }
 
@@ -153,9 +181,19 @@ function updateComplexityCard() {
     const algo = selectAlgo.value;
     const meta = ALGO_METADATA[algo];
     if (meta) {
-        valTime.textContent = meta.time;
+        valBest.textContent = meta.best;
+        valAvg.textContent = meta.avg;
+        valWorst.textContent = meta.worst;
         valSpace.textContent = meta.space;
         valStability.textContent = meta.stability;
+        if (meta.stability === 'Stable') {
+            valStability.className = 'pill-val text-emerald';
+        } else {
+            valStability.className = 'pill-val text-amber';
+        }
+        if (!isSorting) {
+            setPhase(`Selected ${meta.name} • Click Start Sorting to begin`, '');
+        }
     }
 }
 selectAlgo.addEventListener('change', updateComplexityCard);
@@ -250,6 +288,7 @@ async function bubbleSort() {
     const n = array.length;
     for (let i = 0; i < n - 1; i++) {
         let swapped = false;
+        setPhase(`Pass ${i + 1}/${n - 1} • Comparing adjacent pairs`);
         for (let j = 0; j < n - i - 1; j++) {
             if (stopRequested) return;
 
@@ -257,13 +296,17 @@ async function bubbleSort() {
             await delay();
 
             if (compare(j, j + 1) > 0) {
+                setPhase(`Pass ${i + 1} • Swapping [${j}] (${array[j]}) > [${j + 1}] (${array[j + 1]})`);
                 swap(j, j + 1);
                 swapped = true;
                 drawArray([j, j + 1]);
                 await delay();
             }
         }
-        if (!swapped) break;
+        if (!swapped) {
+            setPhase(`Zero inversions remaining after pass ${i + 1}!`);
+            break;
+        }
     }
 }
 
@@ -272,6 +315,7 @@ async function selectionSort() {
     const n = array.length;
     for (let i = 0; i < n - 1; i++) {
         let minIdx = i;
+        setPhase(`Pass ${i + 1}/${n - 1} • Finding minimum in range [${i}..${n - 1}]`);
         for (let j = i + 1; j < n; j++) {
             if (stopRequested) return;
 
@@ -280,9 +324,11 @@ async function selectionSort() {
 
             if (compare(j, minIdx) < 0) {
                 minIdx = j;
+                setPhase(`Pass ${i + 1} • Found candidate min: ${array[minIdx]} at index ${minIdx}`);
             }
         }
         if (minIdx !== i) {
+            setPhase(`Pass ${i + 1} • Placing minimum ${array[minIdx]} into sorted index ${i}`);
             swap(i, minIdx);
             drawArray([i, minIdx]);
             await delay();
@@ -295,12 +341,14 @@ async function insertionSort() {
     const n = array.length;
     for (let i = 1; i < n; i++) {
         let j = i;
+        setPhase(`Item ${i + 1}/${n} • Inserting key ${array[i]} into sorted sub-array`);
         while (j > 0 && compare(j - 1, j) > 0) {
             if (stopRequested) return;
 
             drawArray([j, j - 1]);
             await delay();
 
+            setPhase(`Shifting ${array[j - 1]} right to make room for ${array[j]}`);
             swap(j, j - 1);
             j--;
 
@@ -318,6 +366,7 @@ async function mergeSort() {
 async function mergeSortRecursive(left, right) {
     if (left >= right || stopRequested) return;
     const mid = Math.floor((left + right) / 2);
+    setPhase(`Dividing partition [${left}..${right}] at mid index ${mid}`);
 
     await mergeSortRecursive(left, mid);
     await mergeSortRecursive(mid + 1, right);
@@ -326,6 +375,7 @@ async function mergeSortRecursive(left, right) {
 
 async function merge(left, mid, right) {
     if (stopRequested) return;
+    setPhase(`Merging partitions [${left}..${mid}] and [${mid + 1}..${right}]`);
 
     const temp = [];
     let i = left;
@@ -360,6 +410,7 @@ async function merge(left, mid, right) {
         metricSwaps.textContent = swaps.toLocaleString();
     }
 
+    setPhase(`Writing merged sorted range [${left}..${right}] back to memory`);
     // Write back to main array
     for (let k = 0; k < temp.length; k++) {
         if (stopRequested) return;
@@ -377,6 +428,7 @@ async function quickSort() {
 
 async function quickSortRecursive(start, end) {
     if (start >= end || stopRequested) return;
+    setPhase(`Partitioning subarray [${start}..${end}]`);
     const pivotIdx = await partition(start, end);
     await quickSortRecursive(start, pivotIdx - 1);
     await quickSortRecursive(pivotIdx + 1, end);
@@ -385,6 +437,7 @@ async function quickSortRecursive(start, end) {
 async function partition(start, end) {
     const pivotVal = array[end];
     let pIndex = start;
+    setPhase(`Subarray [${start}..${end}] • Pivot: ${pivotVal} (index ${end})`);
 
     for (let i = start; i < end; i++) {
         if (stopRequested) return pIndex;
@@ -397,6 +450,7 @@ async function partition(start, end) {
         playTone(array[i]);
 
         if (array[i] < pivotVal) {
+            setPhase(`Pivot ${pivotVal}: Swapping [${i}] (${array[i]}) < pivot to index ${pIndex}`);
             swap(i, pIndex);
             pIndex++;
             drawArray([i, pIndex], [], end);
@@ -404,6 +458,7 @@ async function partition(start, end) {
         }
     }
 
+    setPhase(`Placing pivot ${pivotVal} into final partitioned index ${pIndex}`);
     swap(pIndex, end);
     drawArray([pIndex, end]);
     await delay();
@@ -432,6 +487,8 @@ async function startSorting() {
     }, 50);
 
     const algo = selectAlgo.value;
+    const algoName = ALGO_METADATA[algo]?.name || algo;
+    setPhase(`Executing ${algoName}...`, 'working');
 
     if (algo === 'quick') await quickSort();
     else if (algo === 'merge') await mergeSort();
@@ -445,6 +502,7 @@ async function startSorting() {
 
     // Victory sweep: Green scan across sorted array with arpeggio sound
     if (!stopRequested) {
+        setPhase(`Verification sweep • Finalizing sorted array...`, 'active');
         const sorted = [];
         for (let i = 0; i < array.length; i++) {
             sorted.push(i);
@@ -452,6 +510,7 @@ async function startSorting() {
             drawArray([], sorted);
             await new Promise(r => setTimeout(r, Math.max(5, 500 / array.length)));
         }
+        setPhase(`Sorted in ${totalElapsed.toFixed(2)}s • 0 Inversions Remaining 🎉`, 'active');
     }
 
     isSorting = false;
@@ -474,6 +533,7 @@ function stopSorting() {
     selectAlgo.disabled = false;
     btnReset.disabled = true;
 
+    setPhase('Sorting halted by user', 'stopped');
     drawArray();
 }
 
