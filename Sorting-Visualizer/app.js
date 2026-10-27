@@ -28,6 +28,7 @@ const phaseDot = document.getElementById('phaseDot');
 const valBest = document.getElementById('valBest');
 const valAvg = document.getElementById('valAvg');
 const valWorst = document.getElementById('valWorst');
+const valTime = document.getElementById('valTime');
 const valSpace = document.getElementById('valSpace');
 const valStability = document.getElementById('valStability');
 
@@ -38,6 +39,7 @@ const ALGO_METADATA = {
         best: 'O(n log n)',
         avg: 'O(n log n)',
         worst: 'O(n²)',
+        time: 'Avg: O(n log n)',
         space: 'O(log n)',
         stability: 'Unstable'
     },
@@ -46,6 +48,7 @@ const ALGO_METADATA = {
         best: 'O(n log n)',
         avg: 'O(n log n)',
         worst: 'O(n log n)',
+        time: 'Avg: O(n log n)',
         space: 'O(n)',
         stability: 'Stable'
     },
@@ -54,6 +57,7 @@ const ALGO_METADATA = {
         best: 'O(n)',
         avg: 'O(n²)',
         worst: 'O(n²)',
+        time: 'Avg: O(n²)',
         space: 'O(1)',
         stability: 'Stable'
     },
@@ -62,6 +66,7 @@ const ALGO_METADATA = {
         best: 'O(n²)',
         avg: 'O(n²)',
         worst: 'O(n²)',
+        time: 'Avg: O(n²)',
         space: 'O(1)',
         stability: 'Unstable'
     },
@@ -70,6 +75,7 @@ const ALGO_METADATA = {
         best: 'O(n)',
         avg: 'O(n²)',
         worst: 'O(n²)',
+        time: 'Avg: O(n²)',
         space: 'O(1)',
         stability: 'Stable'
     }
@@ -178,21 +184,21 @@ function resetMetrics() {
 
 // --- Dynamic Big-O Complexity Display ---
 function updateComplexityCard() {
+    if (!selectAlgo) return;
     const algo = selectAlgo.value;
     const meta = ALGO_METADATA[algo];
     if (meta) {
-        valBest.textContent = meta.best;
-        valAvg.textContent = meta.avg;
-        valWorst.textContent = meta.worst;
-        valSpace.textContent = meta.space;
-        valStability.textContent = meta.stability;
-        if (meta.stability === 'Stable') {
-            valStability.className = 'pill-val text-emerald';
-        } else {
-            valStability.className = 'pill-val text-amber';
+        if (valBest) valBest.textContent = meta.best || '';
+        if (valAvg) valAvg.textContent = meta.avg || '';
+        if (valWorst) valWorst.textContent = meta.worst || '';
+        if (valTime) valTime.textContent = meta.time || (meta.avg ? `Avg: ${meta.avg}` : '');
+        if (valSpace) valSpace.textContent = meta.space || '';
+        if (valStability) {
+            valStability.textContent = meta.stability || '';
+            valStability.className = 'pill-val ' + (meta.stability === 'Stable' ? 'text-emerald' : 'text-amber');
         }
         if (!isSorting) {
-            setPhase(`Selected ${meta.name} • Click Start Sorting to begin`, '');
+            setPhase(`Selected ${meta.name || algo} • Click Start Sorting to begin`, '');
         }
     }
 }
@@ -243,8 +249,8 @@ function drawArray(activeIndices = [], sortedIndices = [], pivotIndex = -1) {
             ctx.fillStyle = grad;
         }
 
-        // Draw rounded top bar
-        if (w > 4 && barHeight > 4) {
+        // Draw rounded top bar with fallback
+        if (w > 6 && barHeight > 6 && typeof ctx.roundRect === 'function') {
             ctx.beginPath();
             ctx.roundRect(x, y, w, barHeight, [4, 4, 0, 0]);
             ctx.fill();
@@ -568,8 +574,18 @@ inputSpeed.addEventListener('input', () => {
 });
 
 // Initialize on boot
-updateComplexityCard();
-setTimeout(() => {
+function initApp() {
+    updateComplexityCard();
     resizeCanvas();
     generateArray();
-}, 80);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
+
+window.addEventListener('load', () => {
+    resizeCanvas();
+});

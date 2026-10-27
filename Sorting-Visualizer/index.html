@@ -13,7 +13,7 @@
     <meta name="description" content="A real-time sorting algorithm visualizer with 60FPS HTML5 Canvas rendering, Web Audio tone synthesis, live comparison telemetry, and Big-O complexity analysis.">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=2.1">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
 </head>
 <body>
@@ -125,6 +125,8 @@
                             <span class="pill-label">Stability:</span>
                             <span class="pill-val text-amber" id="valStability">Unstable</span>
                         </div>
+                        <!-- Legacy compatibility fallback for cached scripts -->
+                        <span id="valTime" style="display:none"></span>
                     </div>
                 </div>
             </section>
@@ -137,6 +139,6 @@
     </div>
 
     <!-- Application Engine -->
-    <script src="app.js"></script>
+    <script src="app.js?v=2.1"></script>
 </body>
 </html>
